@@ -3,9 +3,7 @@
 ## Tasks
 | Task                                        | Name        | Status |
 | ------------------------------------------- | ----------- | ------ |
-| Get get PAIR-code example working on AWS    | Joseph      | ---    |
-| Front end                                   | Luka        | ---    |
-| Convert model from pt to tf suitable format | Woojang     | ---    |
-| Finetune sentiment analysis using JS        | Woojang     | ---    |
-| Dockerize                                   | Yonge       | ---    |
-| Federated Learning on browser               | Eklavya/All | ---    |
+| Write proposal                              | Yonge       | ---    |
+| Write benchmarking script                   | Woojang     | ---    |
+| Decide on instance type                     |             | ---    |
+| set up and run vllm                         | Joseph      | ---    |
