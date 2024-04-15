@@ -3,7 +3,7 @@ __pycache__
 
 # shell scripts
 useful_scripts.sh
-useful_scripts.sh
+ssh-reset.sh
 
 # secrets
 secret
