@@ -22,6 +22,23 @@
 
 ```pip install -r requirements.txt```
 
+### Usage
+
+You can run the benchmarking script inside the docker container. You may run the bash script `dev.sh` to start the container and enter the container's shell using development mode.
+
+```bash
+sh dev.sh
+```
+
+Or you can just run the following command to start the container and run the benchmarking script.
+
+```bash
+docker run --rm -it --name <YOUR_CONTAINER_NAME> --gpus all -v $(pwd):/usr/app <YOUR_IMAGE_NAME> bash
+
+```python3 
+python3 test_script.py
+```
+
 # Abbreviations
 
 - TTFT: Time To First Token
