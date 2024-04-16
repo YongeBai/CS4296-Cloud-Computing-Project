@@ -8,13 +8,16 @@ WORKDIR /usr/app
 RUN pip install text-generation==0.6.1
 RUN pip install vllm==0.2.7
 
-# # fixing problem with vllm
-# # https://github.com/vllm-project/vllm/issues/3033#issuecomment-1964061542
+# fixing problem with vllm
+# https://github.com/vllm-project/vllm/issues/3033#issuecomment-1964061542
 RUN pip install cupy-cuda11x==12.1
 RUN pip install --force-reinstall torch==2.0.1+cu118 --extra-index-url https://download.pytorch.org/whl/
 
-# # Fixing problem with GPTQ models
+# Fixing problem with GPTQ models
 RUN pip install optimum
 RUN pip install git+https://github.com/huggingface/transformers.git@72958fcd3c98a7afdc61f953aa58c544ebda2f79
 RUN pip install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118/
+
+# Patch
+RUN pip install torch==2.1.2
 
