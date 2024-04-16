@@ -5,39 +5,7 @@ import asyncio
 import math
 import json
 from timeit import default_timer as timer
-import os
-
-
-def read_prompt_from_file(file_path):
-    with open(file_path, 'r') as file:
-        prompt = file.read()
-    return prompt
-
-
-def run_test_n_times(test, n, mesurer_name, framework, prompt_size):
-    os.makedirs(f"results/{framework}", exist_ok=True)
-    file_name = f"{framework}_{mesurer_name}_{prompt_size}"
-    with open(f"results/{framework}/{file_name}.txt", "w") as f:
-        f.write(file_name+"\n")
-        total = 0
-        for i in range(n):
-            value = test()
-            total += value
-            f.write(f"Iteration {i}: {value}\n")
-        f.write(f"Average: {total/n}\n")
-
-
-async def async_run_test_n_times(test, n, mesurer_name, framework, prompt_size):
-    os.makedirs(f"results/{framework}", exist_ok=True)
-    file_name = f"{framework}_{mesurer_name}_{prompt_size}"
-    with open(f"results/{framework}/{file_name}.txt", "w") as f:
-        f.write(file_name+"\n")
-        total = 0
-        for i in range(n):
-            value = await test()
-            total += value
-            f.write(f"Iteration {i}: {value}\n")
-        f.write(f"Average: {total/n}\n")
+from utils import read_prompt_from_file, run_test_n_times, async_run_test_n_times
 
 
 async def send_request_periodically(request, qps, t, total):
