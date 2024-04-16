@@ -3,7 +3,7 @@ import torch
 import time
 
 lm = LLM(
-    "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    "TheBloke/Mistral-7B-Instruct-v0.1-GPTQ",
     dtype='float16',
     gpu_memory_utilization=1.0
 )
