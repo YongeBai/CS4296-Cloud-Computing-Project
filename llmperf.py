@@ -1,5 +1,6 @@
 import argparse
-import vllm_perf
+import accelarators.vllm_perf as vllm_perf
+import accelarators.baseline_perf as baseline_perf
 import asyncio
 import math
 import json
@@ -74,6 +75,8 @@ def run_ttft(args):
     measurer = None
     if args.engine == "vllm":
         measurer = vllm_perf.ttft_measurer(prompt, args)
+    if args.engine == "baseline":
+        measurer = baseline_perf.ttft_measurer(prompt, args)
     else:
         print(f"TTFT test not implemented for {args.engine}")
         return
@@ -167,6 +170,11 @@ def add_engines_parser(base_parser, vllm_batch_size=False):
     if vllm_batch_size:
         vllm_parser.add_argument(
             "--batch_size", type=int, default=128, help="The batch size.")
+
+    baseline_parser = engine_parser.add_parser(
+        "baseline", help="just baseline")
+    baseline_parser.add_argument(
+        "--model", type=str, default="", help="The model.")
 
 
 if __name__ == "__main__":
