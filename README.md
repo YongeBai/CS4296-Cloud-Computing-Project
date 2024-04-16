@@ -42,7 +42,7 @@ python3 test_script.py
 Further, we can use llmperf to test on multiple aspects of the model. For example, we can test the time per output token using vLLM.
 
 ```bash
-python llmperf.py tpot --prompt_file input_examples/llama2/128_tokens --iterations 10 --output_tokens 5 vllm --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --dtype float16
+python llmperf.py tpot --prompt_file input_examples/llama2/128_tokens --iterations 10 --output_tokens 5 vllm --model TheBloke/Mistral-7B-Instruct-v0.1-GPTQ --dtype float16
 ```
 
 # Abbreviations
