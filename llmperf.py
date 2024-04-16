@@ -75,7 +75,7 @@ def run_ttft(args):
     measurer = None
     if args.engine == "vllm":
         measurer = vllm_perf.ttft_measurer(prompt, args)
-    if args.engine == "baseline":
+    elif args.engine == "baseline":
         measurer = baseline_perf.ttft_measurer(prompt, args)
     else:
         print(f"TTFT test not implemented for {args.engine}")
