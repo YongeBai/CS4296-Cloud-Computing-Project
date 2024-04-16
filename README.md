@@ -8,7 +8,7 @@
 | Decide on instance type                     |             | ---    |
 | set up and run vllm                         | Joseph      | ---    |
 
-### Installation
+## Installation
 
 1. Clone the project repository:
 
@@ -22,7 +22,9 @@
 
 ```pip install -r requirements.txt```
 
-### Usage
+## Usage
+
+### Docker Image
 
 You can run the benchmarking script inside the docker container. You may run the bash script `dev.sh` to start the container and enter the container's shell using development mode.
 
@@ -34,16 +36,18 @@ Or you can just run the following command to start the container and run the ben
 
 ```bash
 docker run --rm -it --name <YOUR_CONTAINER_NAME> --gpus all -v $(pwd):/usr/app <YOUR_IMAGE_NAME> bash
-
-```python3 
-python3 test_script.py
 ```
+### Benchmarking
 
-Further, we can use llmperf to test on multiple aspects of the model. For example, we can test the time per output token using vLLM.
+We leverages llmperf to test on multiple aspects of the model. For example, we can test the time per output token using vLLM. For the detailed scripts, refer to the `experiments.sh`.
 
 ```bash
-python llmperf.py tpot --prompt_file input_examples/llama2/128_tokens --iterations 10 --output_tokens 5 vllm --model TheBloke/Mistral-7B-Instruct-v0.1-GPTQ --dtype float16
+sh experiments.sh
 ```
+
+### Supporting Accelarators(Engines)
+1. baseline(This is just a baseline model without any accelarators)
+2. vllm
 
 # Abbreviations
 
