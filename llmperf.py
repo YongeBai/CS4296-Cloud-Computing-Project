@@ -4,6 +4,7 @@ import asyncio
 import math
 import json
 from timeit import default_timer as timer
+import os
 
 
 def read_prompt_from_file(file_path):
@@ -12,24 +13,30 @@ def read_prompt_from_file(file_path):
     return prompt
 
 
-def run_test_n_times(test, n, mesurer_name: str):
-    total = 0
-    print(f"Running {mesurer_name} {n} times")
-    for i in range(n):
-        value = test()
-        total += value
-        print(f"Iteration {i}: {value}")
-    print(f"Average: {total/n}")
+def run_test_n_times(test, n, mesurer_name, framework, prompt_size):
+    os.makedirs(f"results/{framework}", exist_ok=True)
+    file_name = f"{framework}_{mesurer_name}_{prompt_size}"
+    with open(f"results/{framework}/{file_name}.txt", "w") as f:
+        f.write(file_name+"\n")
+        total = 0
+        for i in range(n):
+            value = test()
+            total += value
+            f.write(f"Iteration {i}: {value}\n")
+        f.write(f"Average: {total/n}\n")
 
 
-async def async_run_test_n_times(test, n, mesurer_name: str):
-    total = 0
-    print(f"Running {mesurer_name} {n} times")
-    for i in range(n):
-        value = await test()
-        total += value
-        print(f"Iteration {i}: {value}")
-    print(f"Average: {total/n}")
+async def async_run_test_n_times(test, n, mesurer_name, framework, prompt_size):
+    os.makedirs(f"results/{framework}", exist_ok=True)
+    file_name = f"{framework}_{mesurer_name}_{prompt_size}"
+    with open(f"results/{framework}/{file_name}.txt", "w") as f:
+        f.write(file_name+"\n")
+        total = 0
+        for i in range(n):
+            value = await test()
+            total += value
+            f.write(f"Iteration {i}: {value}\n")
+        f.write(f"Average: {total/n}\n")
 
 
 async def send_request_periodically(request, qps, t, total):
@@ -70,7 +77,8 @@ def run_ttft(args):
     else:
         print(f"TTFT test not implemented for {args.engine}")
         return
-    run_test_n_times(measurer, args.iterations, "TTFT")
+    run_test_n_times(measurer, args.iterations, args.test,
+                     args.engine, len(prompt.split()))
 
 
 def run_tpot(args):
@@ -81,7 +89,8 @@ def run_tpot(args):
     else:
         print(f"TPOT test not implemented for {args.engine}")
         return
-    asyncio.run(async_run_test_n_times(measurer, args.iterations, "TPOT"))
+    asyncio.run(async_run_test_n_times(measurer, args.iterations,
+                args.test, args.engine, len(prompt.split())))
 
 
 def run_static_batch(args):
@@ -92,7 +101,8 @@ def run_static_batch(args):
     else:
         print(f"Static batch test not implemented for {args.engine}")
         return
-    run_test_n_times(measurer, args.iterations, "Static Batch Throughput")
+    run_test_n_times(measurer, args.iterations, args.test,
+                     args.engine, len(prompt.split()))
 
 
 def run_rate_throughput(args):
@@ -107,7 +117,7 @@ def run_rate_throughput(args):
     async def wrapper():
         return await send_request_periodically(measurer, args.qps, args.t, args.total_requests)
     asyncio.run(async_run_test_n_times(
-        wrapper, args.iterations, "Rate Throughput"))
+        wrapper, args.iterations, args.test, args.engine, len(prompt.split())))
 
 
 def run_rate_sampled_throughput(args):
@@ -124,7 +134,7 @@ def run_rate_sampled_throughput(args):
     async def wrapper():
         return await send_sampled_request_periodically(measurer, samples, args.qps, args.t, args.total_requests)
     asyncio.run(async_run_test_n_times(
-        wrapper, args.iterations, "Rate Sampled Throughput"))
+        wrapper, args.iterations, args.test, args.engine, len(samples)))
 
 
 def run_rate_sampled_output_throughput(args):
@@ -141,7 +151,7 @@ def run_rate_sampled_output_throughput(args):
     async def wrapper():
         return await send_sampled_request_periodically(measurer, samples, args.qps, args.t, args.total_requests)
     asyncio.run(async_run_test_n_times(
-        wrapper, args.iterations, "Rate Sampled Output Throughput"))
+        wrapper, args.iterations, args.test, args.engine, len(samples)))
 
 
 def add_engines_parser(base_parser, vllm_batch_size=False):
