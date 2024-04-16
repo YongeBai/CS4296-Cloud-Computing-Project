@@ -1,0 +1,4 @@
+baseline_ttft_10_tokens
+Iteration 0: 0.7131106500000897
+Iteration 1: 0.15196169600039866
+Average: 0.43253617300024416

@@ -53,3 +53,7 @@ if __name__ == "__main__":
         # tokens per second
         run_test_n_times(lambda: tokens_ps(prompt), 10,
                          "tokens_ps", framework, prompt_size)
+
+    # vram usage
+    with open(f"results/{framework}/{framework}_gpu_usage", "w") as f:
+        f.write(f"VRAM: {str(get_max_gpu_memory())} GB")

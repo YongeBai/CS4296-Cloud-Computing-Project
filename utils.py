@@ -1,5 +1,5 @@
 import os
-
+import torch
 
 def get_prompts():
     files = os.listdir("prompts")
@@ -21,3 +21,8 @@ def run_test_n_times(test, n, test_name, framework, prompt_size):
             f.write(f"Iteration {i}: {value}\n")
         f.write(f"Average: {total/n}\n")
 
+def get_max_gpu_memory():
+    max_memory = torch.cuda.max_memory_allocated()
+    max_memory_gb = max_memory / (1024 ** 3)
+
+    return max_memory_gb
