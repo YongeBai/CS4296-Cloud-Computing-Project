@@ -11,13 +11,13 @@ def get_prompts():
     
 
 def run_test_n_times(test, n, test_name, framework):
-    file_name = f"{framework}_{test_name}_results.txt"
-    with open(file_name, "w") as f:
-        f.write(file_name)
+    file_name = f"{framework}_{test_name}_results"
+    with open(file_name+".txt", "w") as f:
+        f.write(file_name+"\n")
         total = 0
         for i in range(n):
             value = test()
             total += value
-            f.write(f"Iteration {i}: {value}")
+            f.write(f"Iteration {i}: {value}\n")
         f.write(f"Average: {total/n}")
 

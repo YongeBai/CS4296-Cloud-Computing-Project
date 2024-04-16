@@ -26,5 +26,5 @@ if __name__ == "__main__":
     framework = "baseline"    
 
     for prompt in prompts:
-        print("ttft test")
-        run_test_n_times(ttft(prompts), 5, "ttft", framework)
+        print("ttft test")        
+        run_test_n_times(lambda: ttft(prompt), 10, "ttft", framework)
