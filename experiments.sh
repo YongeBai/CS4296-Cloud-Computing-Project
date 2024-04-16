@@ -1,6 +1,6 @@
 MODEL_NAME=TheBloke/Mistral-7B-Instruct-v0.1-GPTQ
 ITERATIONS=10
-INPUT_PATH=input_examples/llama2/128_tokens
+INPUT_PATH=prompts/10_tokens.txt
 
 # Script to run ttft on both
 python llmperf.py ttft --prompt_file $INPUT_PATH --iterations $ITERATIONS vllm --model $MODEL_NAME
