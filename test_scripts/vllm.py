@@ -3,8 +3,8 @@ import torch
 import time
 
 lm = LLM(
-    "mistralai/Mistral-7B-v0.1",
-    dtype=torch.bfloat16,
+    "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    dtype='float16',
     gpu_memory_utilization=1.0
 )
 
@@ -21,7 +21,7 @@ time_taken = end - start
 print(f"Time taken: {time_taken:.2f}s")
 
 # Calculate generated tokens per second
-num_tokens = len(output.token_ids)
+num_tokens = len(output)
 tokens_per_second = num_tokens / time_taken
 print(f"Tokens per second: {tokens_per_second:.2f}")
 

@@ -1,0 +1,12 @@
+# python related
+__pycache__
+
+# shell scripts
+useful_scripts.sh
+ssh-reset.sh
+
+# secrets
+secret
+secret.pub
+*.pub
+*.pem
