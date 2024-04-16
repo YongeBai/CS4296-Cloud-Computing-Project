@@ -12,8 +12,9 @@ def read_prompt_from_file(file_path):
     return prompt
 
 
-def run_test_n_times(test, n):
+def run_test_n_times(test, n, mesurer_name: str):
     total = 0
+    print(f"Running {mesurer_name} {n} times")
     for i in range(n):
         value = test()
         total += value
@@ -21,8 +22,9 @@ def run_test_n_times(test, n):
     print(f"Average: {total/n}")
 
 
-async def async_run_test_n_times(test, n):
+async def async_run_test_n_times(test, n, mesurer_name: str):
     total = 0
+    print(f"Running {mesurer_name} {n} times")
     for i in range(n):
         value = await test()
         total += value
@@ -68,7 +70,7 @@ def run_ttft(args):
     else:
         print(f"TTFT test not implemented for {args.engine}")
         return
-    run_test_n_times(measurer, args.iterations)
+    run_test_n_times(measurer, args.iterations, "TTFT")
 
 
 def run_tpot(args):
@@ -79,7 +81,7 @@ def run_tpot(args):
     else:
         print(f"TPOT test not implemented for {args.engine}")
         return
-    asyncio.run(async_run_test_n_times(measurer, args.iterations))
+    asyncio.run(async_run_test_n_times(measurer, args.iterations, "TPOT"))
 
 
 def run_static_batch(args):
@@ -90,7 +92,7 @@ def run_static_batch(args):
     else:
         print(f"Static batch test not implemented for {args.engine}")
         return
-    run_test_n_times(measurer, args.iterations)
+    run_test_n_times(measurer, args.iterations, "Static Batch Throughput")
 
 
 def run_rate_throughput(args):
@@ -104,7 +106,8 @@ def run_rate_throughput(args):
 
     async def wrapper():
         return await send_request_periodically(measurer, args.qps, args.t, args.total_requests)
-    asyncio.run(async_run_test_n_times(wrapper, args.iterations))
+    asyncio.run(async_run_test_n_times(
+        wrapper, args.iterations, "Rate Throughput"))
 
 
 def run_rate_sampled_throughput(args):
@@ -120,7 +123,8 @@ def run_rate_sampled_throughput(args):
 
     async def wrapper():
         return await send_sampled_request_periodically(measurer, samples, args.qps, args.t, args.total_requests)
-    asyncio.run(async_run_test_n_times(wrapper, args.iterations))
+    asyncio.run(async_run_test_n_times(
+        wrapper, args.iterations, "Rate Sampled Throughput"))
 
 
 def run_rate_sampled_output_throughput(args):
@@ -136,7 +140,8 @@ def run_rate_sampled_output_throughput(args):
 
     async def wrapper():
         return await send_sampled_request_periodically(measurer, samples, args.qps, args.t, args.total_requests)
-    asyncio.run(async_run_test_n_times(wrapper, args.iterations))
+    asyncio.run(async_run_test_n_times(
+        wrapper, args.iterations, "Rate Sampled Output Throughput"))
 
 
 def add_engines_parser(base_parser, vllm_batch_size=False):
