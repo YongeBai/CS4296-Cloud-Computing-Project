@@ -1,2 +1,11 @@
+# python files
 .venv
 __pycache__
+
+# secrets
+secret
+secret.pub
+
+# script files
+ssh-reset.sh
+useful_scripts.sh
