@@ -5,13 +5,18 @@ from vllm.utils import random_uuid
 from timeit import default_timer as timer
 
 
+GPU_MEMORY_UTILIZATION = 0.8
+MAX_MODEL_LEN = 10000
+
+
 def ttft_measurer(prompt, args):
     llm = LLM(
         model=args.model,
         dtype=args.dtype,
         device_map="auto",
         trust_remote_code=False,
-        revision="main"
+        revision="main",
+        gpu_memory_utilization=GPU_MEMORY_UTILIZATION
     )
     tokenizer = llm.get_tokenizer()
 
@@ -42,6 +47,8 @@ def tpot_measurer(prompt, args):
     engineArgs.device_map = "auto"
     engineArgs.revision = "main"
     engineArgs.quantization = "gptq"
+    engineArgs.gpu_memory_utilization = GPU_MEMORY_UTILIZATION
+    engineArgs.max_model_len = MAX_MODEL_LEN
 
     llm = AsyncLLMEngine.from_engine_args(engineArgs)
 
@@ -153,4 +160,9 @@ def init_async_llm(args):
     engineArgs.gpu_memory_utilization = args.gpu_memory_utilization
     engineArgs.disable_log_stats = True
     engineArgs.disable_log_requests = True
+    engineArgs.device_map = "auto"
+    engineArgs.revision = "main"
+    engineArgs.quantization = "gptq"
+    engineArgs.gpu_memory_utilization = GPU_MEMORY_UTILIZATION
+    engineArgs.max_model_len = MAX_MODEL_LEN
     return AsyncLLMEngine.from_engine_args(engineArgs)
