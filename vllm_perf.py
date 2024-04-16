@@ -8,8 +8,10 @@ from timeit import default_timer as timer
 def ttft_measurer(prompt, args):
     llm = LLM(
         model=args.model,
-        trust_remote_code=True,
         dtype=args.dtype,
+        device_map="auto",
+        trust_remote_code=False,
+        revision="main"
     )
     tokenizer = llm.get_tokenizer()
 
@@ -33,10 +35,14 @@ def ttft_measurer(prompt, args):
 
 def tpot_measurer(prompt, args):
     engineArgs = AsyncEngineArgs(args.model)
-    engineArgs.trust_remote_code = True
+    engineArgs.trust_remote_code = False
     engineArgs.dtype = args.dtype
     engineArgs.disable_log_stats = True
     engineArgs.disable_log_requests = True
+    engineArgs.device_map = "auto"
+    engineArgs.revision = "main"
+    engineArgs.quantization = "gptq"
+
     llm = AsyncLLMEngine.from_engine_args(engineArgs)
 
     async def single_request():
