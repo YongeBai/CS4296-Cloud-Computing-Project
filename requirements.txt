@@ -3,5 +3,6 @@ text-generation==0.6.1
 transformers
 optimum
 accelerate
-# pip install torch --index-url https://download.pytorch.org/whl/cu122
-# pip install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu122/
+text-generation==0.6.1
+vllm==0.2.7
+cupy-cuda11x==12.1

@@ -5,7 +5,7 @@ import asyncio
 import math
 import json
 from timeit import default_timer as timer
-from utils import read_prompt_from_file, run_test_n_times, async_run_test_n_times
+from utils import read_prompt_from_file, run_test_n_times, async_run_test_n_times, get_prompts
 
 
 async def send_request_periodically(request, qps, t, total):
@@ -39,30 +39,57 @@ async def send_sampled_request_periodically(request, samples, qps, t, total):
 
 
 def run_ttft(args):
-    prompt = read_prompt_from_file(args.prompt_file)
+    prompts = get_prompts()
     measurer = None
-    if args.engine == "vllm":
-        measurer = vllm_perf.ttft_measurer(prompt, args)
-    elif args.engine == "baseline":
-        measurer = baseline_perf.ttft_measurer(prompt, args)
-    else:
-        print(f"TTFT test not implemented for {args.engine}")
-        return
-    run_test_n_times(measurer, args.iterations, args.test,
-                     args.engine, len(prompt.split()))
+    for prompt_size, prompt in prompts:      
+        prompt_size = prompt_size[:-4]
+        if args.engine == "vllm":
+            measurer = vllm_perf.ttft_measurer(prompt, args)
+        elif args.engine == "baseline":
+            measurer = baseline_perf.ttft_measurer(prompt, args)
+        else:
+            print(f"TTFT test not implemented for {args.engine}")
+            return
+        run_test_n_times(measurer, args.iterations, args.test,
+                        args.engine, prompt_size)
 
 
 def run_tpot(args):
-    prompt = read_prompt_from_file(args.prompt_file)
+    prompts = get_prompts()
     measurer = None
-    if args.engine == "vllm":
-        measurer = vllm_perf.tpot_measurer(prompt, args)
-    else:
-        print(f"TPOT test not implemented for {args.engine}")
-        return
-    asyncio.run(async_run_test_n_times(measurer, args.iterations,
-                args.test, args.engine, len(prompt.split())))
+    run_async = False
+    for prompt_size, prompt in prompts:      
+        prompt_size = prompt_size[:-4]
+        if args.engine == "vllm":
+            measurer = vllm_perf.tpot_measurer(prompt, args)
+            run_async = True
+        elif args.engine == 'baseline':
+            measurer = baseline_perf.tpot_measurer(prompt, args)
+        else:
+            print(f"TPOT test not implemented for {args.engine}")
+            return
+        if run_async:
+            asyncio.run(async_run_test_n_times(measurer, args.iterations,
+                    args.test, args.engine, prompt_size))
+        else:
+            run_test_n_times(measurer, args.iterations, args.test,
+                    args.engine, prompt_size)
 
+def run_throughput(args):
+    prompts = get_prompts()
+    measurer = None
+    for prompt_size, prompt in prompts:      
+        prompt_size = prompt_size[:-4]
+        if args.engine == "vllm":
+            measurer = vllm_perf.throughput_measurer(prompt, args)
+        elif args.engine == "baseline":
+            measurer = baseline_perf.throughput_measurer(prompt, args)
+        else:
+            print(f"throughput test not implemented for {args.engine}")
+            return
+        run_test_n_times(measurer, args.iterations, args.test,
+                    args.engine, prompt_size)
+        
 
 def run_static_batch(args):
     prompt = read_prompt_from_file(args.prompt_file)

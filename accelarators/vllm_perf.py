@@ -68,6 +68,37 @@ def tpot_measurer(prompt, args):
     return single_request
 
 
+def throughput_measurer(prompt, args):
+    llm = LLM(
+        model=args.model,
+        dtype=args.dtype,
+        trust_remote_code=False,
+        revision="main",
+        disable_log_stats=True,
+        quantization="gptq",
+        max_model_len=MAX_MODEL_LEN,
+    )
+    tokenizer = llm.get_tokenizer()
+
+    def single_request():
+        sampling_params = SamplingParams(
+            temperature=0.0,
+            ignore_eos=True,
+            max_tokens=args.output_tokens,
+        )
+        prompt_token_ids = tokenizer.encode(prompt)
+        llm._add_request(
+            prompt=None,
+            prompt_token_ids=prompt_token_ids,
+            sampling_params=sampling_params,
+        )
+        start = timer()
+        llm._run_engine(use_tqdm=False)
+        end = timer()
+        return (end-start)/args.output_tokens
+    return single_request
+
+
 def static_batch_measurer(prompt, args):
     llm = LLM(
         model=args.model,
@@ -95,7 +126,6 @@ def static_batch_measurer(prompt, args):
         tokens_count = args.batch_size * args.output_tokens
         return tokens_count / total_time
     return single_request
-
 
 def rate_throughput_measurer(prompt, args):
     llm = init_async_llm(args)

@@ -1,4 +1,0 @@
-baseline_tokens_ps_10_tokens
-Iteration 0: 32.536971189983525
-Iteration 1: 32.49658995942688
-Average: 32.5167805747052
