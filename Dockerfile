@@ -4,12 +4,11 @@ WORKDIR /usr/app
 
 RUN apt-get update && apt-get install -y python3.10 python3-pip
 
-RUN apt-get install -y cuda-toolkit-11-8
-
 # Instead of using the requirements.txt file, we can install the packages directly
 # This is useful to save time when building the image by caching the layers
 # If you have a new package to install, you can put at the "end" of the list
 
+# TODO: set versions for transformers and optimum
 
 # Fixing problem with GPTQ models
 RUN pip install torch --index-url https://download.pytorch.org/whl/cu118

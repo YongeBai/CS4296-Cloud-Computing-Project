@@ -197,6 +197,17 @@ if __name__ == "__main__":
                              default=128, help="Number of tokens to retrieve")
     add_engines_parser(tpot_parser)
 
+    throughput_parser = test_parser.add_parser(
+        "throughput", help="Measure Throughput in tokens/second")
+    throughput_parser.add_argument("--prompt_file", type=str,
+                             help="Path to a file containing the prompt.")
+    throughput_parser.add_argument("--iterations", type=int,
+                             default=10, help="The iterations parameter.")
+    throughput_parser.add_argument("--output_tokens", type=int,
+                             default=128, help="Number of tokens to retrieve")
+    add_engines_parser(throughput_parser)
+
+
     stb_parser = test_parser.add_parser(
         "static_batch_throughput", help="Measure throughput for static batch")
     stb_parser.add_argument("--prompt_file", type=str,

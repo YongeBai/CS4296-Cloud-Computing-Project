@@ -9,6 +9,11 @@ INPUT_PATH=prompts/10_tokens.txt
 python3 llmperf.py ttft vllm --model $MODEL_NAME
 python3 llmperf.py ttft baseline --model $MODEL_NAME
 
+python3 llmperf.py tpot vllm --model $MODEL_NAME
+python3 llmperf.py tpot baseline --model $MODEL_NAME
+
+python3 llmperf.py throughput vllm --model $MODEL_NAME
+python3 llmperf.py throughput baseline --model $MODEL_NAME
 # Script to run tpot on vllm
 # python llmperf.py tpot --prompt_file $INPUT_PATH --iterations $ITERATIONS --output_tokens 5 \
 #     vllm --model $MODEL_NAME --dtype float16

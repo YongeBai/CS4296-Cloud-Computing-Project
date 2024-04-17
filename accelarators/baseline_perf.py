@@ -23,15 +23,15 @@ def tpot_measurer(prompt, args):
     def single_request():
         pipe = pipeline(
             "text-generation",
-            model=model,
+            model=llm,
             tokenizer=tokenizer,
             max_new_tokens=args.output_tokens,
         )
-        start = timer()
+        start_time = timer()
         response = pipe(prompt)[0]["generated_text"]
         end_time = timer()
         num_tokens = len(tokenizer.tokenize(response))
-        return (end-start)/num_tokens
+        return (end_time-start_time)/num_tokens
     return single_request
 
 def throughput_measurer(prompt, args):
@@ -39,7 +39,7 @@ def throughput_measurer(prompt, args):
     def single_request():
         pipe = pipeline(
             "text-generation",
-            model=model,
+            model=llm,
             tokenizer=tokenizer,
             max_new_tokens=args.output_tokens,
         )
