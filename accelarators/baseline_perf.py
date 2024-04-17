@@ -51,13 +51,18 @@ def throughput_measurer(prompt, args):
     return single_request
 
 def init_llm(args):
-    llm = AutoModelForCausalLM.from_pretrained(
-        args.model, device_map="auto", trust_remote_code=False, revision="main"
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        args.model, use_fast=True)
-    
-    return llm, tokenizer
+    global llm, tokenizer
+    try:
+        return llm, tokenizer
+    except:
+        llm = AutoModelForCausalLM.from_pretrained(
+            args.model, device_map="auto", trust_remote_code=False, revision="main"
+        )
+        llm.config.pad_token_id = llm.config.eos_token_id
+        tokenizer = AutoTokenizer.from_pretrained(
+            args.model, use_fast=True)
+        
+        return llm, tokenizer
 
 
 # if __name__ == "__main__":
