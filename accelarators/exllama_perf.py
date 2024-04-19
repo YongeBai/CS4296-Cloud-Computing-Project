@@ -1,4 +1,4 @@
-import sys, os
+import os
 from timeit import default_timer as timer
 
 from exllamav2 import(
@@ -57,23 +57,19 @@ def init_llm(args):
     try:
         return llm, tokenizer
     except:
-        # user, model = args.model
-        model_directory = "./.HF_CACHE/hub/models--TheBloke--Mistral-7B-Instruct-v0.1-GPTQ/snapshots/6ae1e4ae2cfbaf107c705ed722ec243b4f88014d"
-        # model_directory=args.model
+        user, model = args.model.split("/")
+        # model_directory = f"./.HF_CACHE/hub/models--{user}--{model}/snapshots/6ae1e4ae2cfbaf107c705ed722ec243b4f88014d"
+
+        snapshots_path = f"./.HF_CACHE/hub/models--{user}--{model}/snapshots"
+        first_directory = os.listdir(snapshots_path)[0]        
+
+        model_directory = os.path.join(snapshots_path, first_directory) if first_directory else None
 
         config = ExLlamaV2Config(model_directory)
         model = ExLlamaV2(config)
         cache = ExLlamaV2Cache(model, lazy = True)
         model.load_autosplit(cache)
         tokenizer = ExLlamaV2Tokenizer(config)
-
-
-        # config = ExLlamaV2Config()
-        # config.model_dir = model_directory
-        # config.prepare()
-        # model = ExLlamaV2(config)
-        # cache = ExLlamaV2Cache(model)
-        # tokenizer = ExLlamaV2Tokenizer(config)
         llm = ExLlamaV2BaseGenerator(model, cache, tokenizer)
         
         return llm, tokenizer
