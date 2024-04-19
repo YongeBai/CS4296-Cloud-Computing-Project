@@ -177,6 +177,11 @@ def add_engines_parser(base_parser, vllm_batch_size=False):
         "baseline", help="just baseline")
     baseline_parser.add_argument(
         "--model", type=str, default="", help="The model.")
+    
+    baseline_parser = engine_parser.add_parser(
+        "exllama", help="ExLlamaV2")
+    baseline_parser.add_argument(
+        "--model", type=str, default="", help="The model.")
 
 
 if __name__ == "__main__":
@@ -191,7 +196,7 @@ if __name__ == "__main__":
     ttft_parser.add_argument("--prompt_file", type=str,
                              help="Path to a file containing the prompt.")
     ttft_parser.add_argument("--iterations", type=int,
-                             default=5, help="The iterations parameter.")
+                             default=10, help="The iterations parameter.")
     add_engines_parser(ttft_parser)
 
     tpot_parser = test_parser.add_parser(
@@ -199,7 +204,7 @@ if __name__ == "__main__":
     tpot_parser.add_argument("--prompt_file", type=str,
                              help="Path to a file containing the prompt.")
     tpot_parser.add_argument("--iterations", type=int,
-                             default=5, help="The iterations parameter.")
+                             default=10, help="The iterations parameter.")
     tpot_parser.add_argument("--output_tokens", type=int,
                              default=128, help="Number of tokens to retrieve")
     add_engines_parser(tpot_parser)
@@ -209,7 +214,7 @@ if __name__ == "__main__":
     throughput_parser.add_argument("--prompt_file", type=str,
                              help="Path to a file containing the prompt.")
     throughput_parser.add_argument("--iterations", type=int,
-                             default=5, help="The iterations parameter.")
+                             default=10, help="The iterations parameter.")
     throughput_parser.add_argument("--output_tokens", type=int,
                              default=128, help="Number of tokens to retrieve")
     add_engines_parser(throughput_parser)
@@ -220,7 +225,7 @@ if __name__ == "__main__":
     stb_parser.add_argument("--prompt_file", type=str,
                             help="Path to a file containing the prompt.")
     stb_parser.add_argument("--iterations", type=int,
-                            default=5, help="The iterations parameter.")
+                            default=10, help="The iterations parameter.")
     stb_parser.add_argument("--output_tokens", type=int,
                             default=128, help="Number of tokens to retrieve")
     stb_parser.add_argument("--batch_size", type=int,

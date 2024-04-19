@@ -19,10 +19,10 @@ RUN pip install transformers==4.40.0
 # RUN pip install git+https://github.com/huggingface/transformers.git@72958fcd3c98a7afdc61f953aa58c544ebda2f79
 RUN pip install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118
 
-# downgrading vllm specified here
-# https://github.com/vllm-project/vllm/issues/2797
 RUN pip install text-generation==0.6.1
-RUN pip install vllm==0.4.0 
+
+# https://docs.vllm.ai/en/latest/getting_started/installation.html#install-with-pip
+RUN pip install https://github.com/vllm-project/vllm/releases/download/v0.4.0/vllm-0.4.0+cu118-cp310-cp310-manylinux1_x86_64.whl --extra-index-url https://download.pytorch.org/whl/cu118
 
 # fixing problem with vllm
 # https://github.com/vllm-project/vllm/issues/3033#issuecomment-1964061542
@@ -31,8 +31,9 @@ RUN pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/
 
 # RUN pip install --force-reinstall torch==2.0.1+cu118 --extra-index-url https://download.pytorch.org/whl/
 
-RUN pip install exllamav2==0.0.12
+RUN pip install exllamav2==0.0.19
 # Patch
 # RUN pip install torch==2.1.2
 
 
+RUN pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
