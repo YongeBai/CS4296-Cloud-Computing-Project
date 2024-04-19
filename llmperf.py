@@ -1,6 +1,7 @@
 import argparse
 import accelarators.vllm_perf as vllm_perf
 import accelarators.baseline_perf as baseline_perf
+import accelarators.exllama_perf as exllama_perf
 import asyncio
 import math
 import json
@@ -47,6 +48,8 @@ def run_ttft(args):
             measurer = vllm_perf.ttft_measurer(prompt, args)
         elif args.engine == "baseline":
             measurer = baseline_perf.ttft_measurer(prompt, args)
+        elif args.engine == "exllama":
+            measurer = exllama_perf.ttft_measurer(prompt, args)
         else:
             print(f"TTFT test not implemented for {args.engine}")
             return
@@ -65,6 +68,8 @@ def run_tpot(args):
             run_async = True
         elif args.engine == 'baseline':
             measurer = baseline_perf.tpot_measurer(prompt, args)
+        elif args.engine == 'exllama':
+            measurer = exllama_perf.tpot_measurer(prompt, args)
         else:
             print(f"TPOT test not implemented for {args.engine}")
             return
@@ -84,6 +89,8 @@ def run_throughput(args):
             measurer = vllm_perf.throughput_measurer(prompt, args)
         elif args.engine == "baseline":
             measurer = baseline_perf.throughput_measurer(prompt, args)
+        elif args.engine == "exllama":
+            measurer = exllama_perf.throughput_measurer(prompt, args)
         else:
             print(f"throughput test not implemented for {args.engine}")
             return
@@ -184,7 +191,7 @@ if __name__ == "__main__":
     ttft_parser.add_argument("--prompt_file", type=str,
                              help="Path to a file containing the prompt.")
     ttft_parser.add_argument("--iterations", type=int,
-                             default=10, help="The iterations parameter.")
+                             default=5, help="The iterations parameter.")
     add_engines_parser(ttft_parser)
 
     tpot_parser = test_parser.add_parser(
@@ -192,7 +199,7 @@ if __name__ == "__main__":
     tpot_parser.add_argument("--prompt_file", type=str,
                              help="Path to a file containing the prompt.")
     tpot_parser.add_argument("--iterations", type=int,
-                             default=10, help="The iterations parameter.")
+                             default=5, help="The iterations parameter.")
     tpot_parser.add_argument("--output_tokens", type=int,
                              default=128, help="Number of tokens to retrieve")
     add_engines_parser(tpot_parser)
@@ -202,7 +209,7 @@ if __name__ == "__main__":
     throughput_parser.add_argument("--prompt_file", type=str,
                              help="Path to a file containing the prompt.")
     throughput_parser.add_argument("--iterations", type=int,
-                             default=10, help="The iterations parameter.")
+                             default=5, help="The iterations parameter.")
     throughput_parser.add_argument("--output_tokens", type=int,
                              default=128, help="Number of tokens to retrieve")
     add_engines_parser(throughput_parser)
@@ -213,7 +220,7 @@ if __name__ == "__main__":
     stb_parser.add_argument("--prompt_file", type=str,
                             help="Path to a file containing the prompt.")
     stb_parser.add_argument("--iterations", type=int,
-                            default=10, help="The iterations parameter.")
+                            default=5, help="The iterations parameter.")
     stb_parser.add_argument("--output_tokens", type=int,
                             default=128, help="Number of tokens to retrieve")
     stb_parser.add_argument("--batch_size", type=int,
@@ -280,6 +287,8 @@ if __name__ == "__main__":
         run_ttft(args)
     elif args.test == "tpot":
         run_tpot(args)
+    elif args.test == "throughput":
+        run_throughput(args)
     elif args.test == "static_batch_throughput":
         run_static_batch(args)
     elif args.test == "rate_throughput":

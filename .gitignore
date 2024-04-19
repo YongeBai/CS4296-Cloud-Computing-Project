@@ -3,6 +3,9 @@ __pycache__
 
 results
 
+.HF_CACHE
+
+
 # shell scripts
 useful_scripts.sh
 ssh-reset.sh

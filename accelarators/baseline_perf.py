@@ -31,6 +31,7 @@ def tpot_measurer(prompt, args):
         response = pipe(prompt)[0]["generated_text"]
         end_time = timer()
         num_tokens = len(tokenizer.tokenize(response))
+        print(f"generated {num_tokens} in {end_time-start_time}s")
         return (end_time-start_time)/num_tokens
     return single_request
 
@@ -43,10 +44,11 @@ def throughput_measurer(prompt, args):
             tokenizer=tokenizer,
             max_new_tokens=args.output_tokens,
         )
-        start = timer()
+        start_time = timer()
         response = pipe(prompt)[0]["generated_text"]
         end_time = timer()
         num_tokens = len(tokenizer.tokenize(response))
+        print(f"generated {num_tokens} in {end_time-start_time}s")
         return num_tokens/(end_time-start_time)
     return single_request
 
