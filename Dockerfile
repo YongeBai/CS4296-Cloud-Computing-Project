@@ -37,3 +37,5 @@ RUN pip install exllamav2==0.0.19
 
 
 RUN pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+
+RUN pip install "sglang[all]"

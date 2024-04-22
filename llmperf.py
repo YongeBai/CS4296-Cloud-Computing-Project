@@ -2,6 +2,7 @@ import argparse
 import accelarators.vllm_perf as vllm_perf
 import accelarators.baseline_perf as baseline_perf
 import accelarators.exllama_perf as exllama_perf
+import accelarators.sglang_perf as sglang_perf
 import asyncio
 import math
 import json
@@ -50,6 +51,8 @@ def run_ttft(args):
             measurer = baseline_perf.ttft_measurer(prompt, args)
         elif args.engine == "exllama":
             measurer = exllama_perf.ttft_measurer(prompt, args)
+        elif args.engine == "sglang":
+            measurer = sglang_perf.ttft_measurer(prompt, args)
         else:
             print(f"TTFT test not implemented for {args.engine}")
             return
@@ -70,6 +73,8 @@ def run_tpot(args):
             measurer = baseline_perf.tpot_measurer(prompt, args)
         elif args.engine == 'exllama':
             measurer = exllama_perf.tpot_measurer(prompt, args)
+        elif args.engine == "sglang":
+            measurer = sglang_perf.tpot_measurer(prompt, args)
         else:
             print(f"TPOT test not implemented for {args.engine}")
             return
@@ -91,6 +96,8 @@ def run_throughput(args):
             measurer = baseline_perf.throughput_measurer(prompt, args)
         elif args.engine == "exllama":
             measurer = exllama_perf.throughput_measurer(prompt, args)
+        elif args.engine == "sglang":
+            measurer = sglang_perf.throughput_measurer(prompt, args)
         else:
             print(f"throughput test not implemented for {args.engine}")
             return
@@ -178,9 +185,16 @@ def add_engines_parser(base_parser, vllm_batch_size=False):
     baseline_parser.add_argument(
         "--model", type=str, default="", help="The model.")
     
-    baseline_parser = engine_parser.add_parser(
+    exllama_parser = engine_parser.add_parser(
         "exllama", help="ExLlamaV2")
-    baseline_parser.add_argument(
+
+    exllama_parser.add_argument(
+        "--model", type=str, default="", help="The model.")
+    
+    sglang_parser = engine_parser.add_parser(
+        "sglang", help="SGLang")
+
+    sglang_parser.add_argument(
         "--model", type=str, default="", help="The model.")
 
 
