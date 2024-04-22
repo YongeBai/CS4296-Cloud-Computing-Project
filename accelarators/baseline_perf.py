@@ -66,23 +66,3 @@ def init_llm(args):
         
         return llm, tokenizer
 
-
-# if __name__ == "__main__":
-#     prompts = get_prompts()
-#     framework = "baseline"
-#     os.makedirs(f"results/{framework}", exist_ok=True)
-#     for prompt_size, prompt in prompts:
-#         print("ttft test")
-#         prompt_size = prompt_size[:-4]
-
-#         # time to first token
-#         run_test_n_times(lambda: ttft(prompt), 10,
-#                          "ttft", framework, prompt_size)
-
-#         # tokens per second
-#         run_test_n_times(lambda: tokens_ps(prompt), 10,
-#                          "tokens_ps", framework, prompt_size)
-
-#     # vram usage
-#     with open(f"results/{framework}/{framework}_gpu_usage", "w") as f:
-#         f.write(f"VRAM: {str(get_max_gpu_memory())} GB")
