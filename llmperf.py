@@ -11,70 +11,68 @@ from timeit import default_timer as timer
 from utils import read_prompt_from_file, run_test_n_times, async_run_test_n_times, get_prompts
 
 
-def run_ttft(args):
-    prompts = get_prompts()
+def run_ttft(args):    
     measurer = None
-    for prompt_size, prompt in prompts:      
-        prompt_size = prompt_size[:-4]
-        if args.engine == "vllm":
-            measurer = vllm_perf.ttft_measurer(prompt, args)
-        elif args.engine == "baseline":
-            measurer = baseline_perf.ttft_measurer(prompt, args)
-        elif args.engine == "exllama":
-            measurer = exllama_perf.ttft_measurer(prompt, args)
-        elif args.engine == "together":
-            measurer = together_perf.ttft_measurer(prompt, args)
-        else:
-            print(f"TTFT test not implemented for {args.engine}")
-            return
-        run_test_n_times(measurer, args.iterations, args.test,
-                        args.engine, prompt_size)
+    prompt = read_prompt_from_file(args.prompt_file)
+    prompt_size = args.prompt_file[8:-4]
+    if args.engine == "vllm":
+        measurer = vllm_perf.ttft_measurer(prompt, args)
+    elif args.engine == "baseline":
+        measurer = baseline_perf.ttft_measurer(prompt, args)
+    elif args.engine == "exllama":
+        measurer = exllama_perf.ttft_measurer(prompt, args)
+    elif args.engine == "together":
+        measurer = together_perf.ttft_measurer(prompt, args)
+    else:
+        print(f"TTFT test not implemented for {args.engine}")
+        return
+    run_test_n_times(measurer, args.iterations, args.test,
+                    args.engine, prompt_size)
 
 # REMOVE ASYNC REQUIREMENT FOR VLLM
 def run_tpot(args):
-    prompts = get_prompts()
     measurer = None
     run_async = False
-    for prompt_size, prompt in prompts:      
-        prompt_size = prompt_size[:-4]
-        if args.engine == "vllm":
-            measurer = vllm_perf.tpot_measurer(prompt, args)
-            run_async = True
-        elif args.engine == 'baseline':
-            measurer = baseline_perf.tpot_measurer(prompt, args)
-        elif args.engine == 'exllama':
-            measurer = exllama_perf.tpot_measurer(prompt, args)
-        elif args.engine == "together":
-            measurer = together_perf.tpot_measurer(prompt, args)
-        else:
-            print(f"TPOT test not implemented for {args.engine}")
-            return
-        if run_async:
-            asyncio.run(async_run_test_n_times(measurer, args.iterations,
-                    args.test, args.engine, prompt_size))
-        else:
-            run_test_n_times(measurer, args.iterations, args.test,
-                    args.engine, prompt_size)
-
-def run_throughput(args):
-    prompts = get_prompts()
-    measurer = None
-    for prompt_size, prompt in prompts:      
-        prompt_size = prompt_size[:-4]
-        if args.engine == "vllm":
-            measurer = vllm_perf.throughput_measurer(prompt, args)
-        elif args.engine == "baseline":
-            measurer = baseline_perf.throughput_measurer(prompt, args)
-        elif args.engine == "exllama":
-            measurer = exllama_perf.throughput_measurer(prompt, args)
-        elif args.engine == "together":
-            measurer = together_perf.throughput_measurer(prompt, args)
-        else:
-            print(f"throughput test not implemented for {args.engine}")
-            return
+    prompt = read_prompt_from_file(args.prompt_file)
+    prompt_size = args.prompt_file[8:-4]
+    if args.engine == "vllm":
+        measurer = vllm_perf.tpot_measurer(prompt, args)
+        run_async = True
+    elif args.engine == 'baseline':
+        measurer = baseline_perf.tpot_measurer(prompt, args)
+    elif args.engine == 'exllama':
+        measurer = exllama_perf.tpot_measurer(prompt, args)
+    elif args.engine == "together":
+        measurer = together_perf.tpot_measurer(prompt, args)
+    else:
+        print(f"TPOT test not implemented for {args.engine}")
+        return
+    if run_async:
+        asyncio.run(async_run_test_n_times(measurer, args.iterations,
+                args.test, args.engine, prompt_size))
+    else:
         run_test_n_times(measurer, args.iterations, args.test,
-                    args.engine, prompt_size)
-        
+                args.engine, prompt_size)
+
+def run_throughput(args):    
+    measurer = None
+    prompt = read_prompt_from_file(args.prompt_file)
+    prompt_size = args.prompt_file[8:-4]
+
+    if args.engine == "vllm":
+        measurer = vllm_perf.throughput_measurer(prompt, args)
+    elif args.engine == "baseline":
+        measurer = baseline_perf.throughput_measurer(prompt, args)
+    elif args.engine == "exllama":
+        measurer = exllama_perf.throughput_measurer(prompt, args)
+    elif args.engine == "together":
+        measurer = together_perf.throughput_measurer(prompt, args)
+    else:
+        print(f"throughput test not implemented for {args.engine}")
+        return
+    run_test_n_times(measurer, args.iterations, args.test,
+                args.engine, prompt_size)
+    
 
 
 def add_engines_parser(base_parser, vllm_batch_size=False):
