@@ -34,22 +34,6 @@ def run_test_n_times(test, n, mesurer_name, framework, prompt_size):
         f.write(f"VRAM: {str(get_max_gpu_memory())} GB")
 
 
-async def async_run_test_n_times(test, n, mesurer_name, framework, prompt_size):
-    os.makedirs(f"results/{framework}", exist_ok=True)
-    file_name = f"{framework}_{mesurer_name}_{prompt_size}"
-    with open(f"results/{framework}/{file_name}.txt", "w") as f:
-        f.write(file_name+"\n")
-        total = 0
-        for i in range(n):
-            value = await test()
-            total += value
-            f.write(f"Iteration {i}: {value}\n")
-        f.write(f"Average: {total/n}\n")
-    # vram usage
-    with open(f"results/{framework}/{framework}_gpu_usage", "w") as f:
-        f.write(f"VRAM: {str(get_max_gpu_memory())} GB")
-
-
 def get_max_gpu_memory():
     max_memory = torch.cuda.max_memory_allocated()
     max_memory_gb = max_memory / (1024 ** 3)
