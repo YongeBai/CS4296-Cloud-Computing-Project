@@ -9,10 +9,6 @@
 
 ```cd CS4296-Cloud-Computing-Project```
 
-3. Install the required Python packages:
-
-```pip install -r requirements.txt```
-
 ## Usage
 
 ### Docker Image
@@ -23,10 +19,6 @@ You can run the benchmarking script inside the docker container. You may run the
 sh dev.sh
 ```
 
-Or you can just run the following command to start the container and run the benchmarking script.
-
-```bash
-docker run --rm -it --name <YOUR_CONTAINER_NAME> --gpus all -v $(pwd):/usr/app <YOUR_IMAGE_NAME> bash
 ```
 ### Benchmarking
 
@@ -37,8 +29,10 @@ sh experiments.sh
 ```
 
 ### Supporting Accelarators(Engines)
-1. baseline(This is just a baseline model without any accelarators)
-2. vllm
+1. baseline (Huggingface text generation pipeline)
+2. vLLM
+3. SGLang
+4. ExLLaMaV2
 
 # Abbreviations
 

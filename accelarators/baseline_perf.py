@@ -1,4 +1,3 @@
-from utils import *
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 from timeit import default_timer as timer
 
@@ -60,7 +59,6 @@ def init_llm(args):
         llm = AutoModelForCausalLM.from_pretrained(
             args.model, device_map="auto", trust_remote_code=False, revision="main"
         )
-        llm.config.pad_token_id = llm.config.eos_token_id
         tokenizer = AutoTokenizer.from_pretrained(
             args.model, use_fast=True)
         
