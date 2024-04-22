@@ -4,7 +4,6 @@ WORKDIR /usr/app
 
 RUN apt-get update && apt-get install -y python3.10 python3-pip
 RUN apt-get install -y cuda-toolkit-11-8
-RUN pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 RUN pip install optimum==1.19.0
 RUN pip install transformers==4.40.0
 RUN pip install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118
