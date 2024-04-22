@@ -12,6 +12,7 @@ export TOGETHER_API_KEY=""
 # python3 llmperf.py ttft --iterations $ITERATIONS --prompt_file $SHORT_PROMPT baseline --model $MODEL_NAME
 # python3 llmperf.py ttft --iterations $ITERATIONS --prompt_file $SHORT_PROMPT exllama --model $MODEL_NAME
 # python3 llmperf.py ttft --iterations $ITERATIONS --prompt_file $SHORT_PROMPT together --model $MODEL_NAME
+python3 llmperf.py ttft --iterations $ITERATIONS --prompt_file $SHORT_PROMPT vllm --model $MODEL_NAME
 
 # python3 llmperf.py ttft --iterations $ITERATIONS --prompt_file $MID_PROMPT baseline --model $MODEL_NAME
 # python3 llmperf.py ttft --iterations $ITERATIONS --prompt_file $MID_PROMPT exllama --model $MODEL_NAME
@@ -55,7 +56,7 @@ export TOGETHER_API_KEY=""
 
 
 # python3 llmperf.py throughput --iterations $ITERATIONS --prompt_file $SHORT_PROMPT exllama --model $MODEL_NAME
-python3 llmperf.py throughput --iterations $ITERATIONS --prompt_file $MID_PROMPT exllama --model $MODEL_NAME
+# python3 llmperf.py throughput --iterations $ITERATIONS --prompt_file $MID_PROMPT exllama --model $MODEL_NAME
 # python3 llmperf.py throughput --iterations $ITERATIONS --prompt_file $LONG_PROMPT exllama --model $MODEL_NAME
 
 
