@@ -1,4 +1,4 @@
-vllm_throughput_17_tokens_ot_512 GPU USAGE
+vllm_throughput_17_tokens_ot_128 GPU USAGE
 Iteration: 11.40824031829834 GB
 Iteration: 11.40824031829834 GB
 Iteration: 11.40824031829834 GB

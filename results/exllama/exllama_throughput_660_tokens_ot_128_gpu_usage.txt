@@ -1,4 +1,4 @@
-exllama_throughput_17_tokens_ot_512 GPU USAGE
+exllama_throughput_660_tokens_ot_128 GPU USAGE
 Iteration: 8.774086475372314 GB
 Iteration: 8.774086475372314 GB
 Iteration: 8.774086475372314 GB

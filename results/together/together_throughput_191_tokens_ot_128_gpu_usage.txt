@@ -1,4 +1,4 @@
-together_throughput_17_tokens_ot_512 GPU USAGE
+together_throughput_191_tokens_ot_128 GPU USAGE
 Iteration: 0.0 GB
 Iteration: 0.0 GB
 Iteration: 0.0 GB

@@ -1,4 +1,4 @@
-baseline_throughput_17_tokens GPU USAGE
+baseline_throughput_17_tokens_ot_512 GPU USAGE
 Iteration: 4.868458271026611 GB
 Iteration: 4.868458271026611 GB
 Iteration: 4.868458271026611 GB
