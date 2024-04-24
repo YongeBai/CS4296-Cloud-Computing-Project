@@ -11,7 +11,7 @@ from timeit import default_timer as timer
 from utils import read_prompt_from_file, run_test_n_times, async_run_test_n_times, get_prompts
 
 
-def run_ttft(args):    
+def run_ttft(args):
     measurer = None
     prompt = read_prompt_from_file(args.prompt_file)
     prompt_size = args.prompt_file[8:-4]
@@ -27,9 +27,11 @@ def run_ttft(args):
         print(f"TTFT test not implemented for {args.engine}")
         return
     run_test_n_times(measurer, args.iterations, args.test,
-                    args.engine, prompt_size)
+                     args.engine, prompt_size)
 
 # REMOVE ASYNC REQUIREMENT FOR VLLM
+
+
 def run_tpot(args):
     measurer = None
     run_async = False
@@ -49,12 +51,13 @@ def run_tpot(args):
         return
     if run_async:
         asyncio.run(async_run_test_n_times(measurer, args.iterations,
-                args.test, args.engine, prompt_size))
+                                           args.test, args.engine, prompt_size))
     else:
         run_test_n_times(measurer, args.iterations, args.test,
-                args.engine, prompt_size)
+                         args.engine, prompt_size, args.output_tokens)
 
-def run_throughput(args):    
+
+def run_throughput(args):
     measurer = None
     prompt = read_prompt_from_file(args.prompt_file)
     prompt_size = args.prompt_file[8:-4]
@@ -71,8 +74,7 @@ def run_throughput(args):
         print(f"throughput test not implemented for {args.engine}")
         return
     run_test_n_times(measurer, args.iterations, args.test,
-                args.engine, prompt_size)
-    
+                     args.engine, prompt_size, args.output_tokens)
 
 
 def add_engines_parser(base_parser, vllm_batch_size=False):
@@ -93,18 +95,19 @@ def add_engines_parser(base_parser, vllm_batch_size=False):
         "baseline", help="just baseline")
     baseline_parser.add_argument(
         "--model", type=str, default="", help="The model.")
-    
+
     exllama_parser = engine_parser.add_parser(
         "exllama", help="ExLLamaV2")
 
     exllama_parser.add_argument(
         "--model", type=str, default="", help="The model.")
-    
+
     together_parser = engine_parser.add_parser(
         "together", help="together.ai api")
 
     together_parser.add_argument(
         "--model", type=str, default="", help="The model.")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -134,11 +137,11 @@ if __name__ == "__main__":
     throughput_parser = test_parser.add_parser(
         "throughput", help="Measure Throughput in tokens/second")
     throughput_parser.add_argument("--prompt_file", type=str,
-                             help="Path to a file containing the prompt.")
+                                   help="Path to a file containing the prompt.")
     throughput_parser.add_argument("--iterations", type=int,
-                             default=10, help="The iterations parameter.")
+                                   default=10, help="The iterations parameter.")
     throughput_parser.add_argument("--output_tokens", type=int,
-                             default=128, help="Number of tokens to retrieve")
+                                   default=128, help="Number of tokens to retrieve")
     add_engines_parser(throughput_parser)
 
     args = parser.parse_args()
