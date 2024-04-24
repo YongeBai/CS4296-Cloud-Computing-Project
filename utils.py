@@ -21,17 +21,22 @@ def read_prompt_from_file(file_path):
 def run_test_n_times(test, n, mesurer_name, framework, prompt_size):
     os.makedirs(f"results/{framework}", exist_ok=True)
     file_name = f"{framework}_{mesurer_name}_{prompt_size}"
-    with open(f"results/{framework}/{file_name}.txt", "w") as f:
-        f.write(file_name+"\n")
-        total = 0
-        for i in range(n):
-            value = test()
-            total += value
-            f.write(f"Iteration {i}: {value}\n")
-        f.write(f"Average: {total/n}\n")
-    # vram usage
-    with open(f"results/{framework}/{framework}_gpu_usage", "w") as f:
-        f.write(f"VRAM: {str(get_max_gpu_memory())} GB")
+    with open(f"results/{framework}/{file_name}.txt", "w") as f_test:
+        with open(f"results/{framework}/{file_name}_gpu_usage", "w") as f_gpu:
+            f_test.write(file_name+" "+mesurer_name+"\n")
+            f_gpu.write(file_name+" GPU USAGE\n")
+            total_test = 0
+            total_gpu = 0
+            for i in range(n):
+                value = test()
+                gpu_usage = get_max_gpu_memory()
+                total_test += value
+                total_gpu += gpu_usage
+                f_test.write(f"Iteration {i}: {value}\n")
+                f_gpu.write(f"Iteration: {str(gpu_usage)} GB\n")
+            f_test.write(f"Average: {total_test/n}\n")
+            f_gpu.write(f"Average: {total_gpu/n}\n")
+
 
 async def async_run_test_n_times(test, n, mesurer_name, framework, prompt_size):
     os.makedirs(f"results/{framework}", exist_ok=True)
@@ -44,6 +49,7 @@ async def async_run_test_n_times(test, n, mesurer_name, framework, prompt_size):
             total += value
             f.write(f"Iteration {i}: {value}\n")
         f.write(f"Average: {total/n}\n")
+
 
 def get_max_gpu_memory():
     max_memory = torch.cuda.max_memory_allocated()
