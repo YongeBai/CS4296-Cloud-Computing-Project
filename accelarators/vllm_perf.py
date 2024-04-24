@@ -16,7 +16,7 @@ def ttft_measurer(prompt, args):
         revision="main",
         disable_log_stats=True,
         quantization="gptq",
-        # max_model_len=MAX_MODEL_LEN,
+        max_model_len=MAX_MODEL_LEN,
     )
     tokenizer = llm.get_tokenizer()
 
