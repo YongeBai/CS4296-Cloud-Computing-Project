@@ -18,5 +18,5 @@ fi
 docker build -t $DOCKER_IMAGE_NAME -f $DOCKER_FILE_NAME .
 
 # Run docker container to start bash
-docker run --rm -it --name $DOCKER_CONTAINER_NAME --gpus all -v $(pwd):/usr/app $DOCKER_IMAGE_NAME bash
+docker run --rm -it --name $DOCKER_CONTAINER_NAME --gpus all -v $(pwd):/usr/app --env-file .env $DOCKER_IMAGE_NAME bash
 

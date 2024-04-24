@@ -9,9 +9,11 @@ results
 # shell scripts
 useful_scripts.sh
 ssh-reset.sh
+reset.sh
 
 # secrets
 secret
 secret.pub
 *.pub
 *.pem
+.env
