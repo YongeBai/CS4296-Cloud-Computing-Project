@@ -4,11 +4,8 @@ import accelarators.vllm_perf as vllm_perf
 import accelarators.exllama_perf as exllama_perf
 import accelarators.together_perf as together_perf
 
-import asyncio
-import math
-import json
 from timeit import default_timer as timer
-from utils import read_prompt_from_file, run_test_n_times, async_run_test_n_times, get_prompts
+from utils import read_prompt_from_file, run_test_n_times
 
 
 def run_ttft(args):
@@ -29,17 +26,13 @@ def run_ttft(args):
     run_test_n_times(measurer, args.iterations, args.test,
                      args.engine, prompt_size)
 
-# REMOVE ASYNC REQUIREMENT FOR VLLM
-
 
 def run_tpot(args):
     measurer = None
-    run_async = False
     prompt = read_prompt_from_file(args.prompt_file)
     prompt_size = args.prompt_file[8:-4]
     if args.engine == "vllm":
         measurer = vllm_perf.tpot_measurer(prompt, args)
-        run_async = True
     elif args.engine == 'baseline':
         measurer = baseline_perf.tpot_measurer(prompt, args)
     elif args.engine == 'exllama':
@@ -49,12 +42,8 @@ def run_tpot(args):
     else:
         print(f"TPOT test not implemented for {args.engine}")
         return
-    if run_async:
-        asyncio.run(async_run_test_n_times(measurer, args.iterations,
-                                           args.test, args.engine, prompt_size))
-    else:
-        run_test_n_times(measurer, args.iterations, args.test,
-                         args.engine, prompt_size, args.output_tokens)
+    run_test_n_times(measurer, args.iterations, args.test,
+                     args.engine, prompt_size, args.output_tokens)
 
 
 def run_throughput(args):

@@ -1,6 +1,6 @@
 from vllm import LLM, SamplingParams
-from vllm.engine.arg_utils import AsyncEngineArgs
-from vllm.engine.async_llm_engine import AsyncLLMEngine
+from vllm.engine.arg_utils import EngineArgs
+from vllm.engine.llm_engine import LLMEngine
 from vllm.utils import random_uuid
 from timeit import default_timer as timer
 
@@ -39,32 +39,25 @@ def ttft_measurer(prompt, args):
 
 
 def tpot_measurer(prompt, args):
-    engineArgs = AsyncEngineArgs(args.model)
-    engineArgs.trust_remote_code = False
-    engineArgs.dtype = args.dtype
-    engineArgs.disable_log_stats = True
-    engineArgs.disable_log_requests = True
-    engineArgs.device_map = "auto"
-    engineArgs.revision = "main"
-    engineArgs.quantization = "gptq"
-    engineArgs.max_model_len = MAX_MODEL_LEN
+    llm = LLM(
+        model=args.model,
+        dtype=args.dtype,
+        trust_remote_code=False,
+        revision="main",
+        disable_log_stats=True,
+        quantization="gptq",
+        max_model_len=MAX_MODEL_LEN,
+    )
 
-    llm = AsyncLLMEngine.from_engine_args(engineArgs)
-
-    async def single_request():
+    def single_request():
         sampling_params = SamplingParams(
             temperature=0.0,
             ignore_eos=True,
             max_tokens=args.output_tokens,
         )
-        request_id = random_uuid()
-        results_generator = llm.generate(prompt, sampling_params, request_id)
-        i = 0
-        async for _ in results_generator:
-            if i == 0:
-                start = timer()
-            i += 1
-        return (timer() - start) / (i)
+        start = timer()
+        llm.generate(prompt, sampling_params)
+        return (timer() - start) / args.output_tokens
     return single_request
 
 
@@ -126,6 +119,7 @@ def static_batch_measurer(prompt, args):
         tokens_count = args.batch_size * args.output_tokens
         return tokens_count / total_time
     return single_request
+
 
 def rate_throughput_measurer(prompt, args):
     llm = init_async_llm(args)
