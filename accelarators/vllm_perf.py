@@ -5,7 +5,7 @@ from vllm.utils import random_uuid
 from timeit import default_timer as timer
 
 
-MAX_MODEL_LEN = 10000
+MAX_MODEL_LEN = 20000
 
 
 def ttft_measurer(prompt, args):
@@ -16,7 +16,7 @@ def ttft_measurer(prompt, args):
         revision="main",
         disable_log_stats=True,
         quantization="gptq",
-        max_model_len=MAX_MODEL_LEN,
+        # max_model_len=MAX_MODEL_LEN,
     )
     tokenizer = llm.get_tokenizer()
 
