@@ -18,11 +18,14 @@ def read_prompt_from_file(file_path):
     return prompt
 
 
-def run_test_n_times(test, n, mesurer_name, framework, prompt_size):
+def run_test_n_times(test, n, mesurer_name, framework, prompt_size, output_tokens=-1):
     os.makedirs(f"results/{framework}", exist_ok=True)
     file_name = f"{framework}_{mesurer_name}_{prompt_size}"
+    if output_tokens >= 0:
+        file_name += f"_ot_{output_tokens}"
+
     with open(f"results/{framework}/{file_name}.txt", "w") as f_test:
-        with open(f"results/{framework}/{file_name}_gpu_usage", "w") as f_gpu:
+        with open(f"results/{framework}/{file_name}_gpu_usage.txt", "w") as f_gpu:
             f_test.write(file_name+" "+mesurer_name+"\n")
             f_gpu.write(file_name+" GPU USAGE\n")
             total_test = 0
