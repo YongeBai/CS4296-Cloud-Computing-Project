@@ -10,6 +10,7 @@ __pycache__
 useful_scripts.sh
 ssh-reset.sh
 reset.sh
+generate_key.sh
 
 # secrets
 secret

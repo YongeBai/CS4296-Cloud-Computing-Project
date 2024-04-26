@@ -88,7 +88,7 @@ def throughput_measurer(prompt, args):
         start = timer()
         llm._run_engine(use_tqdm=False)
         end = timer()
-        return (end-start)/args.output_tokens
+        return args.output_tokens/(end-start)
     return single_request
 
 
