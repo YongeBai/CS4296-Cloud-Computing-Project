@@ -42,6 +42,29 @@ Since the results are too hard to interpret when they are in the raw format, we 
 python3 results.py
 ```
 
+## Customization
+The experiment have arguments to customize the experiment. You can modify the `experiments.sh` to customize the experiment. The basic structure of the experiment is as follows:
+
+```bash
+python3 llmperf.py \
+    <measurer> \
+    --iterations <num_iterations> \
+    --prompt_file <prompt_file_path> \
+     --output_tokens <output_size> \ # not supported for ttft
+    <framework> \
+    --model <model> \
+
+```
+
+
+- `measurer`: The measurer to test. The supported measurers are `ttft`, `tpot`, and `throughput`.
+- `num_iterations`: The number of iterations to test.
+- `prompt_file_path`: The path to the prompt file.
+- `output_size`: The number of output tokens to generate.
+- `framework`: The framework to test. The supported frameworks are `vllm`, `together`, `exllama`, and `baseline`.
+- `model`: The model to test.
+
+
 
 
 ### Supporting Accelarators(Engines)
