@@ -42,6 +42,10 @@ Since the results are too hard to interpret when they are in the raw format, we 
 python3 results.py
 ```
 
+### Charts
+After generating the summary of the results, you can generate the charts using the jupyter notebook `graphing.ipynb`. You can run the entire notebook to generate the charts. The charts will be saved in the `charts` directory.
+
+
 ## Customization
 The experiment have arguments to customize the experiment. You can modify the `experiments.sh` to customize the experiment. The basic structure of the experiment is as follows:
 
