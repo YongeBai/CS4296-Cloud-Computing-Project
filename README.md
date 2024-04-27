@@ -27,6 +27,23 @@ We leverages llmperf to test on multiple aspects of the model. For example, we c
 sh experiments.sh
 ```
 
+### Results
+After running all the experiment, you can find the results in the `results` directory. The structure of the results directory is as follows:
+```
+results
+├── <framework>
+│   ├── <framework>_<measurer>_<input_size>_tokens_ot_<output_size>.txt
+│   ├── <framework>_<measurer>_<input_size>_tokens_ot_<output_size>_gpu_usage.txt
+```
+
+Since the results are too hard to interpret when they are in the raw format, we provide a script to generate the summary of the results. You can run the following command to generate the summary of the results as `combined_results.csv`.
+
+```bash
+python3 results.py
+```
+
+
+
 ### Supporting Accelarators(Engines)
 1. baseline (Huggingface text generation pipeline)
 2. vLLM
