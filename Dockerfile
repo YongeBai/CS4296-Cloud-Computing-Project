@@ -8,7 +8,6 @@ RUN pip install optimum==1.19.0
 RUN pip install transformers==4.40.0
 RUN pip install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-index/whl/cu118
 RUN pip install text-generation==0.6.1
-# RUN pip install cupy-cuda11x==12.1
 RUN pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 RUN pip install exllamav2==0.0.19
 RUN pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
