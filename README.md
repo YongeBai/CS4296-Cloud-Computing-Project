@@ -23,6 +23,8 @@ sh dev.sh
 
 We leverages llmperf to test on multiple aspects of the model. For example, we can test the time per output token using vLLM. For the detailed scripts, refer to the `experiments.sh`.
 
+Note that for together.ai, it requires the API key to run the benchmarking. You can get the API key from the [together.ai](https://together.ai/). After getting the API key, you can set the API variable `TOGETHER_API_KEY` in the `experiments.sh`. If you do not have the API key, you can just comment out the line for the together.ai.
+
 ```bash
 sh experiments.sh
 ```
